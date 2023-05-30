@@ -1,28 +1,12 @@
-class Game
+require_relative "../common/GameBase.rb"
+require_relative "../common/Player.rb"
+require_relative "Board.rb"
+
+class Game < GameBase
   def initialize
-    puts "Welcome to Tic Tac Toe!"
-    puts "Player 1, what is your name?"
-    player_one_name = gets
-
-    puts "Player 2, what is your name?"
-    player_two_name = gets
-
-    @playerOne = Player.new(player_one_name, "X")
-    @playerTwo = Player.new(player_two_name, "O")
-    @statusMessage = ""
-    @board = Board.new()
-    @winner = nil
-    @turn = 1
-  end
-
-  def to_s
-    print "
-    Player one: #{@playerOne.name}\n
-    Player two: #{@playerTwo.name}\n
-    Current turn: #{@turn}\n
-    #{@statusMessage}
-    #{@board.to_s}
-    "
+    super
+    @playerOne = Player.new(@player_one_name, "X")
+    @playerTwo = Player.new(@player_two_name, "O")
   end
 
   def play
@@ -30,10 +14,17 @@ class Game
       self.turn()
     end
 
-    @statusMessage = "#{@statusMessage + "\nPress 'x' to exit"}"
+    @statusMessage = "#{@statusMessage + "\nPress 'x' to exit or 'a' to play again."}"
     print self.to_s
 
-    until gets.chomp == "x"
+    if gets.chomp == "a"
+      @board = Board.new()
+      @winner = nil
+      @statusMessage = ""
+      @turn = 1
+      self.play()
+    elsif gets.chomp != "x"
+      @statusMessage = "Please provide a valid input"
       print self.to_s
     end
   end
@@ -56,6 +47,10 @@ class Game
     if not move_success
       @statusMessage = "Invalid input. This square is already taken."
       self.turn()
+    end
+
+    if @statusMessage == "Invalid input. This square is already taken."
+      @statusMessage = ""
     end
 
     winner_this_turn = @board.check_for_winner

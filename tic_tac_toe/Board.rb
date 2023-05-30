@@ -1,8 +1,10 @@
-class Board
+require_relative "../common/BoardBase.rb"
+
+class Board < BoardBase
   attr_accessor :turn, :squares, :update_square
 
   def initialize(turn = 1)
-    @turn = turn
+    super(turn)
     @squares = [
       [" ", " ", " "],
       [" ", " ", " "],
@@ -43,11 +45,11 @@ class Board
     # check whether all squares in a row match
     for row in @squares
       if row.all? { |square| square == "X" }
-        if !winner
+        if not winner
           winner = "X"
         end
       elsif row.all? { |square| square == "O" }
-        if !winner
+        if not winner
           winner = "O"
         end
       end
@@ -55,12 +57,10 @@ class Board
 
     # check whether all columns match
     if not winner
-      for column in 0..2
-        if @squares[column].all? { |square| square == "X" }
-          winner = "X"
-        elsif @squares[column].all? { |square| square == "O" }
-          winner = "O"
-        end
+      if (@squares[0][0] == "X" and @squares[1][0] == "X" and @squares[2][0] == "X")
+        winner = "X"
+      elsif (@squares[0][0] == "O" and @squares[1][0] == "O" and @squares[2][0] == "O")
+        winner = "O"
       end
     end
 
