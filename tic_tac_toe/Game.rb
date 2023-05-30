@@ -2,34 +2,18 @@ require_relative "../common/GameBase.rb"
 require_relative "../common/Player.rb"
 require_relative "Board.rb"
 
-class Game < GameBase
+class Game
+  include GameBase
+
   def initialize
-    super
+    super("Tic Tac Toe")
     @playerOne = Player.new(@player_one_name, "X")
     @playerTwo = Player.new(@player_two_name, "O")
   end
 
-  def play
-    until @winner
-      self.turn()
-    end
+  # inherits methods "play" and "to_s" from GameBase module
 
-    @statusMessage = "#{@statusMessage + "\nPress 'x' to exit or 'a' to play again."}"
-    print self.to_s
-
-    if gets.chomp == "a"
-      @board = Board.new()
-      @winner = nil
-      @statusMessage = ""
-      @turn = 1
-      self.play()
-    elsif gets.chomp != "x"
-      @statusMessage = "Please provide a valid input"
-      print self.to_s
-    end
-  end
-
-  def turn()
+  def turn
     # clear the terminal on each turn
     puts "\e[H\e[2J"
     print self.to_s
@@ -39,14 +23,14 @@ class Game < GameBase
 
     unless player_input.is_a?(Numeric) and player_input.between?(1, 9)
       @statusMessage = "Invalid input. Expected a number between 1 and 9."
-      self.turn()
+      self.turn
     end
 
     move_success = @board.update_square(player_input, @turn % 2 == 0 ? "O" : "X")
 
     if not move_success
       @statusMessage = "Invalid input. This square is already taken."
-      self.turn()
+      self.turn
     end
 
     if @statusMessage == "Invalid input. This square is already taken."

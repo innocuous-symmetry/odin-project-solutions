@@ -1,10 +1,10 @@
 require_relative "../common/BoardBase.rb"
 
-class Board < BoardBase
-  attr_accessor :turn, :squares, :update_square
+class Board
+  include BoardBase
+  attr_accessor :squares, :update_square
 
-  def initialize(turn = 1)
-    super(turn)
+  def initialize
     @squares = [
       [" ", " ", " "],
       [" ", " ", " "],

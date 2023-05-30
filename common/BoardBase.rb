@@ -1,13 +1,5 @@
-class BoardBase
-  attr_accessor :turn
-
-  def initialize(turn = 1)
-    @turn = turn
-  end
-
-  def to_s
-    print "
-    Current turn: #{@turn}\n
-    "
+module BoardBase
+  def check_for_winner
+    fail NotImplementedError, "Board must implement a 'check_for_winner' method"
   end
 end
